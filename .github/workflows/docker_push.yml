@@ -1,5 +1,19 @@
+# This workflow is triggered on pushes to the repository.
+# It builds and pushes a Docker image to GitHub Packages when a release is created.
+# and runs the tests.
 name: Docker Compose Actions Workflow
-on: push
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+    branches: [ "main" ]
+
+permissions:
+  contents: read
+  packages: write
+  
 jobs:
   test:
     runs-on: ubuntu-latest
