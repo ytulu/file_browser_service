@@ -13,10 +13,16 @@ app_settings = os.getenv('APP_SETTINGS')
 app.config.from_object(app_settings)
 #print(app.config, file=sys.stderr)
 
-@api.route('/hello')
+blueprint = Blueprint('api', __name__, url_prefix='/api')
+api = Api(blueprint, doc='/doc/')
+app.register_blueprint(blueprint)
+
+@api.route('/')
 @api.doc(params={'id': 'hello world!'})
 class HelloWorld(Resource):
+    '''simple hello world'''
     def get(self):
+        '''get hello world'''
         return jsonify({'hello': 'world'})
 
 api.add_resource(HelloWorld, '/hello')
