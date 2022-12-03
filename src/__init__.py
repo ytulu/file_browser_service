@@ -17,8 +17,8 @@ app.config.from_object(app_settings)
 #api = Api(blueprint, doc='/doc/')
 #app.register_blueprint(blueprint)
 
-@api.route('/api/<path:path>')
-@api.doc(params={'id': '{path}'})
+@api.route('/api/')
+@api.doc(params={'/': '<path:path>'})
 class FilePath(Resource):
     '''return the file path, if direectory, return json of files and other directories'''
     def output(self, path):
@@ -29,7 +29,7 @@ class FilePath(Resource):
             return jsonify({"file": path})
     def get(self):
         '''return the file path, if direectory, return json of files and other directories'''
-        path = 'test'
+        path = '/usr/src/app/src/uploads'
         return self.output(path)
 
 api.add_resource(FilePath, '/api/{path}')
