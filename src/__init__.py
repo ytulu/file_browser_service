@@ -1,7 +1,7 @@
 import os
 import sys
 
-from flask import Flask, jsonify
+from flask import Flask, Blueprint, jsonify
 from flask_restx import Resource, Api
 
 app = Flask(__name__)
@@ -13,16 +13,23 @@ app_settings = os.getenv('APP_SETTINGS')
 app.config.from_object(app_settings)
 #print(app.config, file=sys.stderr)
 
-blueprint = Blueprint('api', __name__, url_prefix='/api')
-api = Api(blueprint, doc='/doc/')
-app.register_blueprint(blueprint)
+#blueprint = Blueprint('api', __name__, url_prefix='/api')
+#api = Api(blueprint, doc='/doc/')
+#app.register_blueprint(blueprint)
 
-@api.route('/')
-@api.doc(params={'id': 'hello world!'})
-class HelloWorld(Resource):
-    '''simple hello world'''
+@api.route('/api/<path:path>')
+@api.doc(params={'id': '{path}'})
+class FilePath(Resource):
+    '''return the file path, if direectory, return json of files and other directories'''
+    def output(self, path):
+        '''return the file path, if direectory, return json of files and other directories'''
+        if os.path.isdir(path):
+            return jsonify({"files": os.listdir(path)})
+        elif os.path.isfile(path):
+            return jsonify({"file": path})
     def get(self):
-        '''get hello world'''
-        return jsonify({'hello': 'world'})
+        '''return the file path, if direectory, return json of files and other directories'''
+        path = 'test'
+        return self.output(path)
 
-api.add_resource(HelloWorld, '/hello')
+api.add_resource(FilePath, '/api/{path}')
