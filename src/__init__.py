@@ -8,8 +8,11 @@ app = Flask(__name__)
 
 api = Api(app)
 
+#set config (will be used for upload directory injection)
+app.config.from_object('src.config.DevelopmentConfig')
+
 @api.route('/hello')
-@api.doc(params={'id': 'hello world'})
+@api.doc(params={'id': 'hello world!'})
 class HelloWorld(Resource):
     def get(self):
         return jsonify({'hello': 'world'})
