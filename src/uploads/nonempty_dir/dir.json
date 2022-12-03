@@ -1,0 +1,19 @@
+{
+  "Directories": [
+    "foo"
+  ],
+  "data": [
+    {
+      "name": "foo1.txt",
+      "owner": 0,
+      "permissions": 33188,
+      "size": 44
+    },
+    {
+      "name": "foo2.txt",
+      "owner": 0,
+      "permissions": 33188,
+      "size": 318
+    }
+  ]
+}
