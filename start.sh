@@ -1,14 +1,19 @@
 #!/bin/bash
 # This script is executed by the first_start.sh script for first time setup
 
-# build the image
-echo "Building the image..."
-docker-compose build
-echo "Done."
 
-# run the container in detached mode
+# Setup the .env file
 echo "Running the container..."
-docker-compose up -d
+UPLOAD_PATH='src/uploads'
+if [ $# -gt 0 ]; then
+    UPLOAD_PATH=$1
+    echo $1
+fi
+echo "Using the root path...$UPLOAD_PATH"
+echo "UPLOAD_PATH=$UPLOAD_PATH" > .env
+echo "UPLOAD_PATH_TEST=src/test/test_files" >> .env
+docker-compose up -d --build
+echo "Done."
 
 # run the tests in the container
 echo "Running the tests..."
