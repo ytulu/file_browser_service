@@ -17,6 +17,12 @@ jobs:
         name: Checkout
         uses: actions/checkout@v3
       -
+        name: 'Create env file'
+        run: |
+          echo "UPLOAD_PATH=src/uploads" > .env
+          echo "UPLOAD_PATH_TEST=src/test/test_files" >> .env
+          cat .env
+      -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v2
       -
