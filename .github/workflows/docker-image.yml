@@ -55,3 +55,9 @@ jobs:
           tags: |
             ghcr.io/ytulu/file-browser-service:latest
             ghcr.io/ytulu/file-browser-service:1.0.0
+      -
+        name: Run unit test
+        uses: addnab/docker-run-action@v3
+        with:
+          image: file-browser-service:latest
+          run: echo "hello world"
