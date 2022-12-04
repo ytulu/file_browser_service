@@ -32,7 +32,7 @@ Building and running the service can be done as followed (default root path is '
 
 ```
 chmod +x start.sh
-./start.sh dev '/root/path'
+./start.sh '/root/path'
 ```
 
 Consecutive runs of the service can be done as followed:
