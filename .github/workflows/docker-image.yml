@@ -43,5 +43,5 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: |
-            file-browser-service:latest
-            file-browser-service:1.0.0
+            ytulu/file-browser-service:latest
+            ytulu/file-browser-service:1.0.0
