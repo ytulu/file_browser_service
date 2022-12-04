@@ -14,8 +14,7 @@ class DevelopmentConfig(BaseConfig):
 class TestingConfig(BaseConfig):
     """Testing configuration"""
     TESTING = True
-    UPLOAD_PATH = os.path.join(os.path.dirname(\
-        os.path.dirname(os.path.abspath(__file__))), 'tests', 'test_files')
+    UPLOAD_PATH_TEST = os.environ.get('UPLOAD_PATH_TEST')
 
 
 class ProductionConfig(BaseConfig):
