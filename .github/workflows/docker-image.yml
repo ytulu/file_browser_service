@@ -40,6 +40,8 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: .
-          platforms: linux/amd64,linux/arm64
+          file: ./Dockerfile
           push: true
-          tags: file-browser-service:latest
+          tags: |
+            file-browser-service:latest
+            file-browser-service:1.0.0
