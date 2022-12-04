@@ -1,7 +1,7 @@
 import os
 import sys
 
-from flask import Flask, Blueprint, jsonify
+from flask import Flask, jsonify
 from flask_restx import Resource, Api
 
 UPLOAD_PATH = os.environ.get('UPLOAD_PATH')
@@ -27,7 +27,7 @@ class FilePath(Resource):
             return jsonify({"file": path})
     def get(self):
         '''return the file path, if direectory, return json of files and other directories'''
-        path = '/usr/src/app/src/uploads'
+        path = 'src/uploads'
         return self.output(path)
 
 api.add_resource(FilePath, '/api/{path}')

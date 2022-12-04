@@ -26,27 +26,17 @@ TODO:
 - [ ] DELETE / -> delete the content of / directory
 - [ ] DELETE /bar -> delete the content of /bar directory
 - [ ] DELETE bar1 -> delete file bar1 from /bar directory
+
+# Running the service
+Building and running the service can be done as followed (default root path is 'src/uploads'):
+
 ```
-## Basic Rules
-- Your REST API should return responses in JSON in an appropriate fashion. Use good REST API
-design practices.
-- Report all files in directory responses, including hidden files. You should report file name, owner,
-size, and permissions (read/write/execute - standard octal representation is acceptable). 
-- You can assume that all files are text files of modest size (i.e., that can fit comfortably within a JSON blob).
-
-## Requirements
-Install [Docker](https://docs.docker.com/get-docker/)
-
-
-## Usage
-To run the server for first time after cloning the repo locally, please execute the following from the root directory:
-
-```bash
-chmod +x first_start.sh
-./first_start.sh
+chmod +x start.sh
+./start.sh dev '/root/path'
 ```
 
-Consecitive runs of the service can be done as followed:
+Consecutive runs of the service can be done as followed:
+
 ```
 chmod +x run.sh
 ./run.sh
