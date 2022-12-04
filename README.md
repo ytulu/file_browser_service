@@ -36,3 +36,26 @@ size, and permissions (read/write/execute - standard octal representation is acc
 
 ## Requirements
 Install [Docker](https://docs.docker.com/get-docker/)
+
+
+## Usage
+To run the server for first time after cloning the repo locally, please execute the following from the root directory:
+
+```bash
+chmod +x first_start.sh
+./first_start.sh
+```
+
+Consecitive runs of the service can be done as followed:
+```
+chmod +x run.sh
+./run.sh
+```
+
+Then visit the [api](http://localhost:5004/api) and take a look at the [swagger docs](http://localhost:5004/) 
+
+## Running Testing locally
+To run the tests locally within docker:
+```
+docker-compose exec -T api python -m pytest "src/tests"
+```
