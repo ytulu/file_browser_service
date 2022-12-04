@@ -45,3 +45,13 @@ jobs:
           tags: |
             ytulu/file-browser-service:latest
             ytulu/file-browser-service:1.0.0
+      -
+        name: Build and push (ghcr.io)
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: |
+            ghcr.io/ytulu/file-browser-service:latest
+            ghcr.io/ytulu/file-browser-service:1.0.0
