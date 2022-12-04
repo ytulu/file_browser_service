@@ -4,7 +4,9 @@ The test config is used to override the default config for testing.
 import os
 import pytest
 
-FIXTURE_DIR = os.path.join(
+from src import app
+
+UPLOAD_PATH_TEST = os.path.join(
     os.path.dirname(os.path.realpath(__file__)),
     'test_files',
     )
@@ -16,6 +18,14 @@ FIXTURE_NONEMPTY_DIR = os.path.join(
 FIXTURE_HIDDEN_DIR = os.path.join(
     os.path.dirname(os.path.realpath(__file__)),
     'test_files', '.hidden_dir')
+
+@pytest.fixture(scope='module')
+def test_app():
+    """Create and configure a new app instance for each test."""
+    app.config.from_object('src.config.TestingConfig')
+    # Create the app with common test config
+    with app.app_context():
+        yield app
 
 @pytest.fixture
 def empty_dir():
