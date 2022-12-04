@@ -36,14 +36,17 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
       -
+        name: Sanitize repo slug
+        uses: actions/github-script@v6
+        id: repo_slug
+        with:
+          result-encoding: string
+          script: return 'ghcr.io/${{ github.repository }}'.toLowerCase()
+      -
         name: Build and push
         uses: docker/build-push-action@v3
         with:
           context: .
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: |
-            ytulu/file-browser-service:latest
-            ytulu/file-browser-service:1.0.0
-            ghcr.io/ytulu/file-browser-service:latest
-            ghcr.io/user/file-browser-service:1.0.0
+          tags: ${{ steps.repo_slug.outputs.result }}:latest
