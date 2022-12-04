@@ -15,4 +15,10 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+      run: docker build . --file Dockerfile --tag file-browser-service:$(date +%s)
+    - name: Build the stack
+      run: docker-compose up -d
+    - name: Unit Test
+      run: docker-compose exec api python -m pytest "src/tests"
+    - name: Smoke Test
+      run: docker run --network container:file-browser-service:$(date +%s) appropriate/curl -s --retry 10 --retry-connrefused http://localhost:5000/api/
