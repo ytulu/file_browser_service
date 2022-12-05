@@ -7,7 +7,7 @@ from werkzeug.datastructures import FileStorage
 
 from src.utils import allowed_file, get_file, get_file_attr, add_upload_file
 
-UPLOAD_PATH = os.environ.get("UPLOAD_PATH")
+UPLOAD_PATH = "src/uploads"
 
 app = Flask(__name__)
 
@@ -76,31 +76,13 @@ class FilePath(Resource):
     def get(self, path):
         """return the file path, if direectory,
         return json of files and other directories"""
-        print(path, file=sys.stderr)
-        if os.path.isfile(os.path.join(UPLOAD_PATH, path)):
-            response = send_from_directory(UPLOAD_PATH, path)
-            response.status_code = 200
-            # debug print
-            attr = get_file_attr(os.path.join(UPLOAD_PATH, path))
-            print(attr, file=sys.stderr)
-            return response
-
-        elif os.path.isdir(os.path.join(UPLOAD_PATH, path)):
-            files = []
-            dirs = []
-            for stuff in os.listdir(os.path.join(UPLOAD_PATH, path)):
-                if os.path.isfile(os.path.join(UPLOAD_PATH, path, stuff)):
-                    fl = os.path.join(UPLOAD_PATH, path, stuff)
-                    files_col = get_file_attr(fl)
-                    files.append(files_col)
-
-                elif os.path.isdir(os.path.join(UPLOAD_PATH, stuff)):
-                    dirs.append(stuff)
-                    resp = jsonify({"data": {"files": files, "Dirs": dirs}})
-                    resp.status_code = 200
-                    return response
-        else:
-            return get_file(path)
+        print("getting path: " + path, file=sys.stderr)
+        print("getting full path: " + UPLOAD_PATH.rstrip("/") + "/" + path, file=sys.stderr)
+        # get current working directory
+        cwd = os.getcwd()
+        print("cwd: " + cwd, file=sys.stderr)
+        print("trying to get path: " + os.path.join(cwd, UPLOAD_PATH, path), file=sys.stderr)
+        return FileRootPath().output(os.path.join(cwd, UPLOAD_PATH, path))
 
 
 api.add_resource(FilePath, "/api/<path:path>")
