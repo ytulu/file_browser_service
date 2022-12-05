@@ -10,16 +10,16 @@ well as a subdirectory bar/ which in turn contains a file bar1 and a directory b
 /home/my_user/otherstuff/foo on input and the REST API will be something like:
 
 ## Endpoints Implemented
-- [ ] GET / -> list contents of foo/ (e.g. foo1, foo2, bar/)
+- [x] GET / -> list contents of foo/ (e.g. foo1, foo2, bar/)
 - [ ] GET /bar -> list contents of foo/bar/ (e.g bar1, baz/)
 - [ ] GET /foo1 -> contents of file foo/foo1
 - [ ] GET /bar/bar1 -> contents of file foo/bar/bar1
 
-TODO:
 - [ ] POST /foo3 -> add foo3 file to / directory
 - [ ] POST /bar/baz2 add baz2 file to /bar directory
 - [ ] POST /qux -> add qux directory to / directory
 
+TODO:
 - [ ] PUT foo2 -> replace foo2 file with new foo2
 - [ ] PUT baz -> replace baz directory with new baz
 
