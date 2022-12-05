@@ -3,8 +3,9 @@ import sys
 
 from flask import Flask, jsonify, send_from_directory
 from flask_restx import Api, Resource
+from werkzeug.datastructures import FileStorage
 
-from src.utils import allowed_file, get_file, get_file_attr
+from src.utils import allowed_file, get_file, get_file_attr, add_upload_file
 
 UPLOAD_PATH = os.environ.get("UPLOAD_PATH")
 
@@ -15,11 +16,15 @@ api = Api(app)
 # set config (will be used for upload directory injection)
 app_settings = os.getenv("APP_SETTINGS")
 app.config.from_object(app_settings)
+
+upload_parser = api.parser()
+upload_parser.add_argument('file', location='files',
+                           type=FileStorage, required=True)
 # print(app.config, file=sys.stderr)
 
 
-@api.route("/api/")
-@api.doc(params={"/": "<path:path>"})
+@api.route("/api/", methods=["GET", "POST"])
+@api.doc(params={"/": "Upload a file"})
 class FileRootPath(Resource):
     """endpoint to get file or directory contents of the root directory"""
 
@@ -30,6 +35,7 @@ class FileRootPath(Resource):
         """return the file path, if direectory,
         return json of files and other directories"""
         if os.path.isdir(path):
+            print(path, file=sys.stderr)
             for root, directories, files in os.walk(path):
                 files_col = []
                 for file in files:
@@ -46,8 +52,15 @@ class FileRootPath(Resource):
     def get(self):
         """return the file path, if direectory,
         return json of files and other directories"""
-        path = "src/uploads"
+        path = UPLOAD_PATH.rstrip("/")
         return self.output(path)
+
+    @api.expect(upload_parser)
+    def post(self):
+        args = upload_parser.parse_args()
+        uploaded_file = args['file']  # This is FileStorage instance
+        url = add_upload_file(uploaded_file)
+        return {'url': url}, 201
 
 
 api.add_resource(FileRootPath, "/api/")
@@ -58,15 +71,12 @@ api.add_resource(FileRootPath, "/api/")
 class FilePath(Resource):
     """endpoint to get file or directory contents"""
 
-    from src.utils import allowed_file, get_file, get_file_attr
-
     """return the file path, if direectory,
     return json of files and other directories"""
-
-    def output(self, path):
+    def get(self, path):
         """return the file path, if direectory,
         return json of files and other directories"""
-
+        print(path, file=sys.stderr)
         if os.path.isfile(os.path.join(UPLOAD_PATH, path)):
             response = send_from_directory(UPLOAD_PATH, path)
             response.status_code = 200
@@ -91,11 +101,6 @@ class FilePath(Resource):
                     return response
         else:
             return get_file(path)
-
-    def get(self, path):
-        """return the file path, if direectory,
-        return json of files and other directories"""
-        return self.output(path)
 
 
 api.add_resource(FilePath, "/api/<path:path>")
