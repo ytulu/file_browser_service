@@ -1,4 +1,5 @@
 import os
+import sys
 
 from flask import jsonify, send_from_directory
 from werkzeug.utils import secure_filename
@@ -38,6 +39,7 @@ Search the upload directory for files and directories
 
 
 def get_file(filename):
+    print("getting path:" + filename, file=sys.stderr)
     for root, directories, files in os.walk(UPLOAD_FOLDER):
         # return the file contents
         if filename in files:
