@@ -62,11 +62,15 @@ jobs:
             ghcr.io/ytulu/file-browser-service:latest
             ghcr.io/ytulu/file-browser-service:1.0.0
       -
-        name: Run unit test
+        name: Lint the code and Run unit test
         uses: addnab/docker-run-action@v3
         with:
           image: ytulu/file-browser-service:latest
-          run: python -m pytest "src/tests"
+          run: |
+            python -m flakes8 "src"
+            python -m black src --check
+            python -m isort src --check-only
+            python -m pytest "src/tests"
       -
         name: Start ytulu/file-browser-service:latest
         run: docker-compose up -d

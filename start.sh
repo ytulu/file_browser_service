@@ -15,6 +15,10 @@ echo "UPLOAD_PATH_TEST=src/test/test_files" >> .env
 docker-compose up -d --build
 echo "Done."
 
+# generate the test coverage report
+echo "Showing the test coverage report..."
+docker-compose exec api python -m pytest "src/tests" -p no:warnings --cov="src" --cov-report html
+
 # run the tests in the container
 echo "Running the tests..."
 docker-compose exec -T api python -m pytest "src/tests"
@@ -23,9 +27,13 @@ docker-compose exec -T api python -m pytest "src/tests"
 echo "Showing the contents of the root uploads folder..."
 docker run --network container:file-browser-service appropriate/curl -s --retry 10 --retry-connrefused http://localhost:5000/api/
 
+# show the test coverage report
+echo "Showing the test coverage report..."
+open htmlcov/index.html
 # Show the swagger docs
 echo "Showing the swagger docs..."
 open http://localhost:5004
 
 # show the endpoints
+echo "Showing the endpoints..."
 open http://localhost:5004/api
