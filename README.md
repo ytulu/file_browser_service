@@ -11,7 +11,7 @@ well as a subdirectory bar/ which in turn contains a file bar1 and a directory b
 
 ## Endpoints Implemented
 - [x] GET / -> list contents of foo/ (e.g. foo1, foo2, bar/)
-- [ ] GET /bar -> list contents of foo/bar/ (e.g bar1, baz/)
+- [X] GET /bar -> list contents of foo/bar/ (e.g bar1, baz/)
 - [ ] GET /foo1 -> contents of file foo/foo1
 - [ ] GET /bar/bar1 -> contents of file foo/bar/bar1
 
