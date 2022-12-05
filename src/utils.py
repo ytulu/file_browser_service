@@ -1,6 +1,7 @@
 import os
 
 from flask import jsonify, send_from_directory
+from werkzeug.utils import secure_filename
 
 ALLOWED_EXTENSIONS = set(["txt", "json"])
 UPLOAD_FOLDER = os.environ.get("UPLOAD_PATH")
@@ -58,3 +59,12 @@ def get_file(filename):
         resp = jsonify({"data": "No file(s) found for " + filename})
         resp.status_code = 404
         return resp
+
+
+def add_upload_file(self, file=None):
+    """add a file to the upload directory"""
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        file.save(os.path.join(self.app.config["UPLOAD_FOLDER"], filename))
+        return True
+    return False
