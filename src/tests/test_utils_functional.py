@@ -1,7 +1,9 @@
 import os
-import pytest
 from pathlib import Path
-from src.utils import get_file_attr, get_file
+
+import pytest
+
+from src.utils import get_file_attr
 
 
 @pytest.fixture
