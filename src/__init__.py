@@ -82,7 +82,18 @@ class FilePath(Resource):
         cwd = os.getcwd()
         print("cwd: " + cwd, file=sys.stderr)
         print("trying to get path: " + os.path.join(cwd, UPLOAD_PATH, path), file=sys.stderr)
-        return FileRootPath().output(os.path.join(cwd, UPLOAD_PATH, path))
+        for root, directories, files in os.walk(os.path.join(cwd, UPLOAD_PATH, path)):
+            files_col = []
+            for file in files:
+                filepath = os.path.join(root, file)
+                files_col.append(get_file_attr(filepath))
+            return jsonify({"data": files_col, "Dirs": directories})
+        if os.path.isfile(os.path.join(cwd, UPLOAD_PATH, path)):
+            return send_from_directory(os.path.join(cwd, UPLOAD_PATH), path)
+        elif os.path.isdir(os.path.join(cwd, UPLOAD_PATH, path)):
+            return FileRootPath().output(os.path.join(cwd, UPLOAD_PATH, path))
+        else:
+            return jsonify({"data": "No file(s) found for " + path})
 
 
 api.add_resource(FilePath, "/api/<path:path>")

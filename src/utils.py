@@ -39,7 +39,7 @@ Search the upload directory for files and directories
 
 
 def get_file(filename):
-    print("getting path:" + filename, file=sys.stderr)
+    print("In get_file:" + filename, file=sys.stderr)
     for root, directories, files in os.walk(UPLOAD_FOLDER):
         # return the file contents
         if filename in files:
