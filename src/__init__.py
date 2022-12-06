@@ -5,7 +5,7 @@ from flask import Flask, jsonify, send_from_directory
 from flask_restx import Api, Resource
 from werkzeug.datastructures import FileStorage
 
-from src.utils import allowed_file, get_file, get_file_attr, add_upload_file
+from src.utils import add_upload_file, allowed_file, get_file, get_file_attr
 
 UPLOAD_PATH = "src/uploads"
 
@@ -17,9 +17,8 @@ api = Api(app)
 app_settings = os.getenv("APP_SETTINGS")
 app.config.from_object(app_settings)
 
-upload_parser = api.parser()
-upload_parser.add_argument('file', location='files',
-                           type=FileStorage, required=True)
+up_par = api.parser()
+up_par.add_argument("file", location="files", type=FileStorage, required=True)
 # print(app.config, file=sys.stderr)
 
 
@@ -55,12 +54,12 @@ class FileRootPath(Resource):
         path = UPLOAD_PATH.rstrip("/")
         return self.output(path)
 
-    @api.expect(upload_parser)
+    @api.expect(up_par)
     def post(self):
-        args = upload_parser.parse_args()
-        uploaded_file = args['file']  # This is FileStorage instance
+        args = up_par.parse_args()
+        uploaded_file = args["file"]  # This is FileStorage instance
         url = add_upload_file(uploaded_file)
-        return {'url': url}, 201
+        return {"url": url}, 201
 
 
 api.add_resource(FileRootPath, "/api/")
@@ -73,16 +72,24 @@ class FilePath(Resource):
 
     """return the file path, if direectory,
     return json of files and other directories"""
+
     def get(self, path):
         """return the file path, if direectory,
         return json of files and other directories"""
         print("getting path: " + path, file=sys.stderr)
-        print("getting full path: " + UPLOAD_PATH.rstrip("/") + "/" + path, file=sys.stderr)
+        print(
+            "getting full path: " + UPLOAD_PATH.rstrip("/") + "/" + path,
+            file=sys.stderr,
+        )
         # get current working directory
         cwd = os.getcwd()
         print("cwd: " + cwd, file=sys.stderr)
-        print("trying to get path: " + os.path.join(cwd, UPLOAD_PATH, path), file=sys.stderr)
-        for root, directories, files in os.walk(os.path.join(cwd, UPLOAD_PATH, path)):
+        print(
+            "trying to get path: " + os.path.join(cwd, UPLOAD_PATH, path),
+            file=sys.stderr,
+        )
+        full_path = os.path.join(cwd, UPLOAD_PATH, path)
+        for root, directories, files in os.walk(full_path):
             files_col = []
             for file in files:
                 filepath = os.path.join(root, file)
