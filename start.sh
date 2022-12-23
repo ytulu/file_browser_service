@@ -29,11 +29,11 @@ docker run --network container:file-browser-service appropriate/curl -s --retry 
 
 # show the test coverage report
 echo "Showing the test coverage report..."
-open htmlcov/index.html
+python3 -m webbrowser htmlcov/index.html
 # Show the swagger docs
 echo "Showing the swagger docs..."
-open http://localhost:5004
+python3 -m webbrowser http://localhost:5004
 
 # show the endpoints
 echo "Showing the endpoints..."
-open http://localhost:5004/api
+python3 -m webbrowser http://localhost:5004/api
